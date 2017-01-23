@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BasicRallyGrid</title>
+    <title>ddn-validator-app</title>
 
     <script type="text/javascript" src="/apps/2.1/sdk.js"></script>
 
@@ -10,44 +10,16 @@
                 Ext.define('CustomApp', {
     extend: 'Rally.app.App',
     componentCls: 'app',
-    launch: function () {
-        console.log("First app worsk!");
+    launch: function() {
+        //Write app code here
 
-        var myGrid = Ext.create('Ext.Container', {
-            store: myStore,
-            items: [{
-                xtype: 'rallygrid',
-                columnCfgs: [
-                    'FormattedID',
-                    'Name',
-                    'Owner',
-                    'ScheduleState'
-                ],
-                storeConfig: {
-                    model: 'userstory'
-                }
-            }],
-            renderTo: Ext.getBody()
-        });
-
-        var myStore = Ext.create('Rally.data.wsapi.Store', {
-            model: 'User Story',
-            autoLoad: true,
-            listeners: {
-                load: function (myStore, myData, success) {
-                    console.log("Got data");
-                }
-            },
-            fetch: ['FormattedID', 'Name', 'Owner', 'ScheduleState']
-        });
-
-        this.add(myGrid);
+        //API Docs: https://help.rallydev.com/apps/2.1/doc/
     }
 });
 
 
             Rally.launchApp('CustomApp', {
-                name:"BasicRallyGrid",
+                name:"ddn-validator-app",
 	            parentRepos:""
             });
 

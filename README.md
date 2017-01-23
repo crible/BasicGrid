@@ -1,4 +1,4 @@
-BasicRallyGrid
+ddn-validator-app
 =========================
 
 ## Overview
@@ -6,7 +6,7 @@ BasicRallyGrid
 
 ## License
 
-BasicRallyGrid is released under the MIT license.  See the file [LICENSE](./LICENSE) for the full text.
+ddn-validator-app is released under the MIT license.  See the file [LICENSE](./LICENSE) for the full text.
 
 ##Documentation for SDK
 

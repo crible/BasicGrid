@@ -4,6 +4,7 @@ var module = module;
 if (module) {
     module.exports = function (grunt) {
         'use strict';
+        require('grunt');
 
         var config, debug, environment, spec, port;
         grunt.loadNpmTasks('grunt-contrib-jasmine');
@@ -19,13 +20,34 @@ if (module) {
         debug = grunt.option('debug') || false;
         config = grunt.file.readJSON('config.json');
 
-        return grunt.initConfig({
+        config.js_files = grunt.file.expand(['src/javascript/utils/*.js','src/javascript/rules/*.js','src/javascript/*.js']);
 
+        config.js_contents = " ";
+        for (var i=0;i<config.js_files.length;i++) {
+            grunt.log.writeln( config.js_files[i]);
+            config.js_contents = config.js_contents + "\n" + grunt.file.read(config.js_files[i]);
+        }
+    
+        grunt.initConfig({
             pkg: grunt.file.readJSON('package.json'),
+            
+            template: {
+                dev: {
+                    src: 'templates/App-debug.html',
+                    dest: 'App-debug.html',
+                    engine: 'underscore',
+                    variables: config
+                },
+            },
+            
+            watch: {
+                files: ['src/javascript/**/*.js', 'src/style/*.css'],
+                tasks: ['deploy']
+            },
 
             jasmine: {
                 app: {
-                    src: config.javascript,
+                    src: 'src/**/*.js',
                     options: {
                         styles: config.css,
                         vendor:[
@@ -43,17 +65,18 @@ if (module) {
                 all: ['test/**/*.js']
             },
 
-            connect: {
-                server: {
-                    options: {
-                        port: port,
-                        open: {
-                            target: 'http://localhost:' + port + '/_SpecRunner.html'
-                        },
-                        keepalive: true
-                    }
-                }
-            }
         });
+
+    //load
+    grunt.loadNpmTasks('grunt-templater');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    
+    //tasks
+    grunt.registerTask('default', ['debug','build','ugly','apikey']);
+    
+    // (uses all the files in src/javascript)
+    grunt.registerTask('build', "Create the html for deployment",['template:dev']);
     };
+ 
 }
